@@ -1,63 +1,59 @@
 import React, { useState } from "react";
-import axios from "axios";
+import "./SearchPage.css";
 
-function Search() {
+const SearchPage = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
+  const handleSearch = async () => {
     if (!query) return;
-
     setLoading(true);
-    setError("");
     try {
-      const res = await axios.get(`http://127.0.0.1:8000/api/search/?q=${query}`);
-      setResults(res.data.results);
+      const res = await fetch(`http://127.0.0.1:8000/api/search/?q=${query}`);
+      const data = await res.json();
+      setResults(data.results || []);
     } catch (err) {
-      setError("Failed to fetch articles. Please try again.");
+      console.error(err);
     }
     setLoading(false);
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
-      <h2>Scholarly Article Search</h2>
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="Enter topic..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          style={{ padding: "8px", width: "70%" }}
-        />
-        <button type="submit" style={{ padding: "8px 12px", marginLeft: "5px" }}>
-          Search
-        </button>
-      </form>
+    <div className="container">
+      <h1 className="title">Scholarly Search</h1>
+<div className="search-bar">
+  <input
+    type="text"
+    value={query}
+    onChange={(e) => setQuery(e.target.value)}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") handleSearch();
+    }}
+    placeholder="Search scholarly articles..."
+  />
+  <button onClick={handleSearch}>Search</button>
+</div>
 
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {results.map((item, idx) => (
-          <li key={idx} style={{ margin: "15px 0", borderBottom: "1px solid #ddd", paddingBottom: "10px" }}>
-            <h3>{item.title}</h3>
-            <p>
-              <b>Year:</b> {item.year || "N/A"}  
-              <br />
-              <b>Authors:</b> {item.authors.join(", ") || "N/A"}
-            </p>
-            <a href={item.url} target="_blank" rel="noreferrer">
-              View Paper
-            </a>
-          </li>
+      {loading && <div className="spinner"><div></div><div></div><div></div></div>}
+
+      <div className="results">
+        {results.map((item, index) => (
+          <div key={index} className="card fade-in">
+            <h2>{item.title}</h2>
+            <p className="authors">{item.authors.length > 0 ? item.authors.join(", ") : "Unknown authors"}</p>
+            <p className="year">{item.year || "Unknown year"}</p>
+            <a href={item.url} target="_blank" rel="noopener noreferrer">View on OpenAlex</a>
+          </div>
         ))}
-      </ul>
+      </div>
+      <div className="footer">
+  Made by <a href="https://github.com/smik022" target="_blank" rel="noopener noreferrer">Smik</a>
+</div>
+
     </div>
   );
-}
+};
 
-export default Search;
+export default SearchPage;

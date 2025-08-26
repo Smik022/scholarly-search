@@ -1,0 +1,145 @@
+body {
+  background: linear-gradient(135deg, #f0f4ff, #ffffff);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.title {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 30px;
+  color: #1a73e8; /* blue accent */
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.search-bar input {
+  width: 70%;
+  padding: 12px 15px;
+  border-radius: 8px 0 0 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-bar button {
+  padding: 12px 20px;
+  border-radius: 0 8px 8px 0;
+  border: none;
+  background: #1a73e8;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.search-bar button:hover {
+  background: #1666c1;
+}
+
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+  opacity: 0; /* start hidden for fade-in */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #1a73e8;
+}
+
+.card p {
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.card a {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 15px;
+  background: #1a73e8;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.card a:hover {
+  background: #1666c1;
+  box-shadow: 0 0 10px #1a73e8;
+}
+
+/* Fade-in animation */
+.fade-in {
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Spinner animation */
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.spinner div {
+  width: 10px;
+  height: 10px;
+  margin: 3px;
+  background: #1a73e8;
+  border-radius: 50%;
+  animation: bounce 0.6s infinite alternate;
+}
+
+@keyframes bounce {
+  to { transform: translateY(-10px); }
+}
+
+
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.footer a {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
