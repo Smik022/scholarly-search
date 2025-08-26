@@ -22,36 +22,56 @@ const SearchPage = () => {
   return (
     <div className="container">
       <h1 className="title">Scholarly Search</h1>
-<div className="search-bar">
-  <input
-    type="text"
-    value={query}
-    onChange={(e) => setQuery(e.target.value)}
-    onKeyDown={(e) => {
-      if (e.key === "Enter") handleSearch();
-    }}
-    placeholder="Search scholarly articles..."
-  />
-  <button onClick={handleSearch}>Search</button>
-</div>
 
+      <div className="search-bar">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }}
+          placeholder="Search scholarly articles..."
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
 
-      {loading && <div className="spinner"><div></div><div></div><div></div></div>}
+      {loading && (
+        <div className="spinner">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      )}
 
       <div className="results">
         {results.map((item, index) => (
           <div key={index} className="card fade-in">
             <h2>{item.title}</h2>
-            <p className="authors">{item.authors.length > 0 ? item.authors.join(", ") : "Unknown authors"}</p>
+            <p className="authors">
+              {item.authors.length > 0
+                ? item.authors.join(", ")
+                : "Unknown authors"}
+            </p>
             <p className="year">{item.year || "Unknown year"}</p>
-            <a href={item.url} target="_blank" rel="noopener noreferrer">View on OpenAlex</a>
+            <p className="source">{item.source || "Unknown source"}</p>
+            <a href={item.url} target="_blank" rel="noopener noreferrer">
+              View Article
+            </a>
           </div>
         ))}
       </div>
-      <div className="footer">
-  Made by <a href="https://github.com/smik022" target="_blank" rel="noopener noreferrer">Smik</a>
-</div>
 
+      <div className="footer">
+        Made by{" "}
+        <a
+          href="https://github.com/smik022"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Smik
+        </a>
+      </div>
     </div>
   );
 };

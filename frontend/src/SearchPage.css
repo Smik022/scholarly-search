@@ -16,7 +16,7 @@ body {
   text-align: center;
   font-size: 3rem;
   margin-bottom: 30px;
-  color: #1a73e8; /* blue accent */
+  color: #1a73e8;
 }
 
 .search-bar {
@@ -62,7 +62,7 @@ body {
   margin-bottom: 20px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
-  opacity: 0; /* start hidden for fade-in */
+  opacity: 0; /* for fade-in animation */
 }
 
 .card:hover {
@@ -81,6 +81,11 @@ body {
   margin: 5px 0;
 }
 
+.card .source {
+  font-style: italic;
+  color: #666;
+}
+
 .card a {
   display: inline-block;
   margin-top: 10px;
@@ -97,7 +102,6 @@ body {
   box-shadow: 0 0 10px #1a73e8;
 }
 
-/* Fade-in animation */
 .fade-in {
   animation: fadeIn 0.5s forwards;
 }
@@ -106,7 +110,6 @@ body {
   to { opacity: 1; }
 }
 
-/* Spinner animation */
 .spinner {
   display: flex;
   justify-content: center;
@@ -125,7 +128,6 @@ body {
 @keyframes bounce {
   to { transform: translateY(-10px); }
 }
-
 
 .footer {
   text-align: center;

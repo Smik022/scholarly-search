@@ -1,33 +1,40 @@
-import requests
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
+import requests
 
-class ScholarlySearchView(APIView):
-    def get(self, request):
-        query = request.GET.get("q", None)
-        if not query:
-            return Response({"error": "Please provide a search query (?q=...)"}, status=400)
+@api_view(['GET'])
+def search_articles(request):
+    query = request.GET.get('q', '')
+    results = []
 
-        url = "https://api.openalex.org/works"
-        params = {
-            "search": query,
-            "per-page": 10,  # number of results
-        }
+    if not query:
+        return Response({"results": []})
 
-        try:
-            r = requests.get(url, params=params, timeout=10)
-            r.raise_for_status()
-            data = r.json().get("results", [])
-        except requests.exceptions.RequestException as e:
-            return Response({"error": "Failed to fetch from OpenAlex API.", "details": str(e)}, status=500)
+    try:
+        # OpenAlex API
+        res = requests.get(
+            "https://api.openalex.org/works",
+            params={"search": query, "per-page": 20},
+            timeout=10
+        )
+        data = res.json()
 
         results = []
-        for item in data:
+        for item in data.get("results", []):
+            # Some items may not have authors
+            authors = [
+                a.get("author", {}).get("display_name")
+                for a in item.get("authorships", [])
+            ]
             results.append({
                 "title": item.get("title"),
+                "authors": authors,
                 "year": item.get("publication_year"),
-                "url": item.get("id"),  # OpenAlex works URL
-                "authors": [auth.get("author", {}).get("display_name") for auth in item.get("authorships", [])] if item.get("authorships") else []
+                "url": item.get("id"),
+                "source": "OpenAlex"
             })
 
-        return Response({"results": results})
+    except Exception as e:
+        print("OpenAlex error:", e)
+
+    return Response({"results": results})
